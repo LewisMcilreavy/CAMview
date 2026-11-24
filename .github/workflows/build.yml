@@ -26,4 +26,5 @@ jobs:
         with:
           tag_name: build-${{ github.run_number }}
           name: Sugar Lock build ${{ github.run_number }}
+          body_path: RELEASE_NOTES.md
           files: SugarLock.apk

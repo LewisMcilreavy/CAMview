@@ -1,33 +1,123 @@
 # Sugar Lock
 
-Shows your CamAPS FX glucose on the Android lock screen and in the status bar.
+See your CamAPS FX glucose on your lock screen, without unlocking your phone.
 
-## How it works
-CamAPS FX has no public API, but it shows your glucose in its own notification.
-Sugar Lock reads that notification (like xDrip+ Companion mode does) and posts a
-silent, always-on notification that's visible on the lock screen. It only reads;
-it never touches CamAPS, your pump or your sensor. Nothing leaves your phone.
+Sugar Lock reads the glucose that CamAPS FX already shows in its notification and puts it:
 
-## Build and install
-1. Install Android Studio and open this folder (File > Open).
-2. Let it sync (it downloads the Android SDK and Gradle the first time).
-3. Turn on Developer options and USB debugging on your phone, plug it in, press Run ▶.
-   Or use Build > Build App Bundle(s)/APK(s) > Build APK(s) and copy the APK to your phone.
+- **in a widget on your lock screen**, coloured by your target range
+- **in the status bar**, as a small number at the top of the screen
+- **in the lock-screen notifications**, with how old the reading is
+- **in Samsung's Now Bar**, on One UI 8 phones that allow it
 
-## First run
-1. Tap **Allow notification access** and turn on Sugar Lock.
-2. Tap **Allow this app to post notifications**.
-3. In your phone's lock-screen settings, set notifications to **show all content**.
-4. On some phones (Samsung, Xiaomi, etc.) set Sugar Lock's battery use to **Unrestricted**
-   so Android doesn't stop it.
+It only reads. It never changes anything in CamAPS, your pump or your sensor, and nothing leaves your phone.
 
-The reading appears the next time CamAPS updates (every ~5 min). After 15 minutes
-with no new reading it shows "OLD READING" and a ? in the status bar.
+> **Sugar Lock is a display only.** CamAPS FX stays in charge of your alarms and insulin. Always check CamAPS before acting on a number.
 
-## If the number is wrong or missing
-CamAPS's notification wording isn't documented. The app shows the last raw
-CamAPS notification text at the bottom of its screen. If the value isn't picked
-up, adjust the patterns in `GlucoseParser.kt`.
+---
 
-## Safety
-Display only. CamAPS FX remains the source of truth for readings, alarms and insulin.
+## 1. Install
+
+1. On your phone, open the [latest release](https://github.com/LewisMcilreavy/CAMview/releases/latest).
+2. Tap **SugarLock.apk** to download it.
+3. Open the download and tap **Install**.
+   - If Android blocks it, tap **Settings**, allow installs from your browser, go back and tap **Install**.
+   - If Play Protect warns you, tap **More details > Install anyway**. It warns because the app isn't from the Play Store.
+
+To update, do the same with a newer release. Your settings and widget are kept.
+
+## 2. First-time setup
+
+Open **Sugar Lock** and work down the screen:
+
+1. **Allow notification access.** Switch on Sugar Lock in the list, and confirm. This lets it see the CamAPS notification.
+2. **Allow this app to post notifications.** Tap **Allow**.
+3. **Lock-screen settings.** Set lock-screen notifications to **Show content** (not "hide content").
+4. **Battery.** Go to **Settings > Apps > Sugar Lock > Battery** and choose **Unrestricted**, so the phone doesn't put it to sleep.
+
+Your first reading appears when CamAPS next updates, usually within 5 minutes. At the top of the app you should see:
+
+- ✓ Notification access on
+- ✓ Can post notifications
+- Last reading … ago
+
+## 3. Put the widget on your lock screen (Samsung)
+
+Samsung only allows its own widgets on the lock screen, so this uses Samsung's free **Good Lock** app.
+
+1. Install **Good Lock** from the Galaxy Store.
+2. In Good Lock, install **LockStar** and switch it on.
+3. Tap the lock-screen preview, then **Add widget**.
+4. Choose **Sugar Lock > Glucose**, drag it where you want it and tap **Save**.
+
+You can also add the same widget to your home screen: long-press the home screen, then **Widgets > Sugar Lock**.
+
+## 4. Show it in the Now Bar (Samsung One UI 8)
+
+1. Turn on Developer options: **Settings > About phone > Software information**, then tap **Build number** 7 times.
+2. Go to **Settings > Developer options** and switch on **Live notifications for all apps**.
+3. Open Sugar Lock once.
+
+## 5. Set your target range
+
+1. Open Sugar Lock and scroll to **Target range**.
+2. Enter your low and high limits, in the same unit CamAPS uses. The default is 3.9–10.0 mmol/L.
+3. Tap **Save**.
+
+## 6. Reading the widget
+
+```
+15.8 ↘
+mmol/L · 2 min ago
+72% in range today
+```
+
+**Colour**
+
+| Colour | Meaning |
+|---|---|
+| Grey | In range, or no reading in the last 15 minutes |
+| Amber | Above your range |
+| Red | Below your range |
+
+**Trend arrow**
+
+The arrow is worked out from your readings over the last 5–20 minutes. It shows up about 10 minutes after the app starts.
+
+| Arrow | Meaning |
+|---|---|
+| ⇈ | Rising fast |
+| ↑ | Rising |
+| ↗ | Rising slowly |
+| → | Steady |
+| ↘ | Falling slowly |
+| ↓ | Falling |
+| ⇊ | Falling fast |
+
+This is the app's own calculation from the numbers. It can differ from the CamAPS arrow, so go by CamAPS.
+
+**Old readings**
+
+If no new reading arrives for 15 minutes:
+- the widget goes grey
+- the notification says **OLD READING**
+- the status bar shows **?**
+
+Check that CamAPS is running and connected to your sensor.
+
+**Time in range today**
+
+This is the share of today, since midnight, that your glucose was inside your target range. It shows once there's 30 minutes of data and resets at midnight. It only counts while the app is running, so it can differ slightly from CamAPS or Glooko.
+
+## 7. Troubleshooting
+
+| Problem | What to try |
+|---|---|
+| No reading appears | Check both ✓ marks in the app. Make sure CamAPS is showing its notification. Turn notification access off and on again. |
+| Reading stops updating | Set Sugar Lock's battery use to **Unrestricted**. Restart the phone. |
+| Number is wrong or missing | At the bottom of the app is **Last CamAPS notification text**. Send a screenshot of it so the reader can be fixed. |
+| Widget is blank on the lock screen | Remove it in LockStar and add it again. |
+| Nothing in the Now Bar | Check **Live notifications for all apps** is on in Developer options. Not every One UI version supports it. |
+
+## Build it yourself
+
+Every change pushed to this repo builds automatically with GitHub Actions and is published as a new release. To build locally, open the folder in Android Studio and press **Run**.

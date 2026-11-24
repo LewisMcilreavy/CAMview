@@ -27,8 +27,8 @@ object Trend {
         if (last == null || r.timeMs - last.first >= 50_000 || last.second != mgdl) hist += r.timeMs to mgdl
         p.edit().putString(KEY, hist.joinToString(";") { "${it.first}:${it.second}" }).apply()
 
-        // Compare with the oldest point that is 5–20 minutes back.
-        val ref = hist.firstOrNull { r.timeMs - it.first in 5 * 60_000L..20 * 60_000L } ?: return ""
+        // Compare with the oldest point 4–20 minutes back (5-minute sensors can arrive a few seconds early).
+        val ref = hist.firstOrNull { r.timeMs - it.first in 4 * 60_000L..20 * 60_000L } ?: return ""
         val rate = (mgdl - ref.second) / ((r.timeMs - ref.first) / 60_000.0)
         return when {
             rate > 3 -> "⇈"
