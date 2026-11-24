@@ -72,7 +72,7 @@ mmol/L · 2 min ago
 I count carbs so you don't have to.
 ```
 
-The last line is a little diabetes joke that changes every day.
+The last line is a little diabetes joke. A random one is picked each day from about 150, and none repeats until they have all been shown.
 
 **Colour**
 

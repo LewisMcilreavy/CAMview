@@ -1,6 +1,6 @@
 ## What's new
 
-- **Joke of the day.** A little diabetes joke at the bottom of the widget, new every day.
+- **Random joke of the day.** About 150 diabetes jokes. A random one is shown each day, and none repeats until they've all been used.
 
 ## Install
 

@@ -1,8 +1,12 @@
 package uk.sugar.lock
 
+import android.content.Context
 import java.time.LocalDate
 
-/** A little diabetes joke on the widget, a new one each day. */
+/**
+ * A little diabetes joke on the widget. A random one is picked each day,
+ * and none repeats until every joke has been shown once.
+ */
 object Jokes {
     private val list = listOf(
         "My pancreas called in sick. Permanently.",
@@ -36,7 +40,140 @@ object Jokes {
         "I'm not hangry, I'm just 3.8.",
         "Some people check the weather. I check my graph.",
         "Every number is just information. Some shout louder.",
+        "Carbs on the label: a work of fiction.",
+        "\"Just a small slice\" – famous last words for my graph.",
+        "My insulin needs a fridge. Very high maintenance.",
+        "More apps for my pancreas than for my bank.",
+        "Hidden carbs: the ninjas of the food world.",
+        "Sensor warm-up: two hours of flying blind.",
+        "Doorframes: the natural enemy of pump tubing.",
+        "Every door handle wants a piece of my tubing.",
+        "Airport security loves my pump. Said no one.",
+        "Hypo snacks always taste better than they should.",
+        "Ate a biscuit for my hypo. Then the packet.",
+        "The rule of 15: easier said than done.",
+        "Diabetes: the only job with no weekends.",
+        "Part-time pancreas, full-time human.",
+        "My sugar has more ups and downs than a soap.",
+        "Today's graph: a gentle rollercoaster.",
+        "Steady line? Screenshot it. Frame it.",
+        "HbA1c: my quarterly report card.",
+        "Clinic day: the graph gets its review.",
+        "Banana: nature's unpredictable carb count.",
+        "Sweet potato isn't a dessert, whatever the name says.",
+        "Pasta: lands at midnight like a delayed flight.",
+        "Fat and protein: the late arrivals at the party.",
+        "Porridge: slow to cook, quick to spike.",
+        "Birthday cake? Did the maths before the candles.",
+        "\"Should you be eating that?\" Should you be asking?",
+        "\"My nan had diabetes.\" Lovely. Tell her hi.",
+        "\"You don't look diabetic.\" Thanks, I moisturise.",
+        "\"Is it the bad kind?\" They're all the annoying kind.",
+        "No, cinnamon won't cure it. But thanks.",
+        "Yes, I can have sugar. No, you can't have my jelly babies.",
+        "My jelly babies are medical supplies. Hands off.",
+        "Bag check: phone, keys, wallet, sugar, more sugar.",
+        "I don't carry snacks. I carry emergency rations.",
+        "Popping out for a walk? Packs like an expedition.",
+        "Holiday packing: two outfits, thirty sensors.",
+        "Spare supplies: ready for the apocalypse.",
+        "Low in a supermarket queue: the longest wait on earth.",
+        "Hypo hunger: I'd eat a dictionary.",
+        "High sugar: thirsty enough to drink the sea.",
+        "My water bottle and I go everywhere together.",
+        "Sick day rules: still rules, still sick.",
+        "Site change day: musical chairs for my belly.",
+        "My fridge door: milk, butter, insulin.",
+        "Insulin: basically liquid gold.",
+        "Alarm at 2am? I'm basically on call.",
+        "I share a bed with an alarm system.",
+        "Nights are when the algorithm earns its keep.",
+        "My pancreas retired early. Lucky thing.",
+        "I'm sweet on the inside. Measurably.",
+        "Not a robot. Just extremely well monitored.",
+        "Part human, part Bluetooth.",
+        "My Bluetooth is always on. For good reason.",
+        "Signal loss: when my phone needs a nap.",
+        "Spontaneous? Not without packing a snack first.",
+        "Gym bag essentials: trainers, towel, jelly babies.",
+        "Swimming: where 'waterproof' claims get tested.",
+        "Stress raises sugar. So does this joke.",
+        "Coffee and my sugar: it's complicated.",
+        "Adrenaline: free glucose, zero carbs.",
+        "My liver does freelance glucose work.",
+        "My liver: chaotic neutral.",
+        "Same breakfast, different result. Science!",
+        "Diabetes keeps me guessing. Every. Single. Day.",
+        "Yesterday's ratio, today's mystery.",
+        "In range? Act natural. Don't spook it.",
+        "100% in range: the unicorn of diabetes.",
+        "I'm fluent in mmol/L.",
+        "Restaurant portions: carb count roulette.",
+        "Chinese takeaway: the delayed-action spike.",
+        "Christmas dinner: a carb marathon.",
+        "Easter: chocolate eggs, chocolate graph.",
+        "Halloween: sweets AND hypo treatment. Win.",
+        "My sugar is high, but my spirits are higher.",
+        "Low sugar, high drama.",
+        "Part-time sugar detective.",
+        "Nobody asks how my pancreas is doing. Rude.",
+        "Diabetes: 24/7 maths homework.",
+        "My stomach growls. My pump beeps back.",
+        "Fingers like a pincushion, heart of gold.",
+        "Glucose meter: tiny drop, big opinions.",
+        "Sensor says LOW. I say SNACK.",
+        "My sugar dropped. So did my patience.",
+        "Hypo treated. Now I'm a new person.",
+        "Every hypo snack counts as 'medicinal'.",
+        "The number isn't a grade. It's a weather report.",
+        "Be kind to yourself. The number will change.",
+        "Didn't choose diabetes. Smashing it anyway.",
+        "Carb ratio? More like carb guesstimate.",
+        "My pump has seen more of my life than my diary.",
+        "Pump tubing: a lasso I never asked for.",
+        "New sensor, new me.",
+        "My graph after Sunday roast: a mountain range.",
+        "Diet drinks: my sparkling sidekicks.",
+        "Hot weather: my insulin's least favourite season.",
+        "Running for the bus counts as a glucose event.",
+        "My idea of a thrill: a perfectly flat night.",
+        "Woke up in range. Today's already a win.",
+        "I don't have mood swings. I have glucose swings.",
+        "Me: 'I'll be fine.' Also me: packs four snacks.",
+        "My superpower: guessing carbs on a buffet plate.",
+        "Lucozade: emergency service in a bottle.",
+        "Hypo at the cinema: the loudest crisp packet ever.",
+        "My cannula and my waistband are in a feud.",
+        "Every sleeve hides a sensor. Mystery solved.",
+        "'Is that a nicotine patch?' No, it's my pancreas.",
+        "Bump a sensor on a door: instant heartbreak.",
+        "Night mode: me, the algorithm and a biscuit tin.",
+        "Diabetes: proudly sponsored by jelly babies.",
+        "Graph looks like a heartbeat. Good sign, I think.",
+        "I check my sugar more than my messages.",
+        "Low on the sofa: too comfy to fetch the juice.",
+        "My pancreas sends its regards. From retirement.",
+        "Rollercoaster graph today. No queue, no ticket.",
+        "One day at a time. One reading at a time.",
     )
 
-    fun today(): String = list[LocalDate.now().dayOfYear % list.size]
+    fun today(c: Context): String {
+        val p = c.getSharedPreferences("sugar", 0)
+        val date = LocalDate.now().toString()
+        val saved = p.getInt("joke_idx", -1)
+        if (p.getString("joke_date", "") == date && saved in list.indices) return list[saved]
+
+        // Take the next joke from a shuffled deck; reshuffle when it runs out.
+        var deck = (p.getString("joke_deck", "") ?: "").split(',')
+            .mapNotNull { it.toIntOrNull() }.filter { it in list.indices }
+        if (deck.isEmpty()) {
+            deck = list.indices.shuffled()
+            // Don't show yesterday's joke again straight after a reshuffle.
+            if (deck.first() == saved && deck.size > 1) deck = deck.drop(1) + deck.first()
+        }
+        val pick = deck.first()
+        p.edit().putString("joke_date", date).putInt("joke_idx", pick)
+            .putString("joke_deck", deck.drop(1).joinToString(",")).apply()
+        return list[pick]
+    }
 }
