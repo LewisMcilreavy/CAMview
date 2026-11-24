@@ -2,6 +2,8 @@
 
 - **Random joke of the day.** About 150 diabetes jokes. A random one is shown each day, and none repeats until they've all been used.
 
+- **Getting ready for Google Play.** Builds now count up their version number, and a privacy policy has been added.
+
 ## Install
 
 1. Tap **SugarLock.apk** below to download it.

@@ -124,3 +124,7 @@ This is the share of today, since midnight, that your glucose was inside your ta
 ## Build it yourself
 
 Every change pushed to this repo builds automatically with GitHub Actions and is published as a new release. To build locally, open the folder in Android Studio and press **Run**.
+
+## Privacy
+
+Sugar Lock has no internet access and keeps everything on your phone. See the [privacy policy](PRIVACY.md).
