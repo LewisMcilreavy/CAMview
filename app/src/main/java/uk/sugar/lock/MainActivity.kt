@@ -58,6 +58,37 @@ class MainActivity : Activity() {
                 "from the Galaxy Store and add the 'Glucose' widget.\n\nThis is a display only. CamAPS FX stays in charge of " +
                 "alarms and insulin – always check CamAPS before acting on a number."
         })
+        // Target range, entered in whatever unit CamAPS uses.
+        val mgdl = Store.load(this)?.unit == "mg/dL"
+        val f = if (mgdl) 18.0 else 1.0
+        fun fmt(x: Double) = if (mgdl) Math.round(x * f).toString() else String.format(java.util.Locale.UK, "%.1f", x)
+        col.addView(label(18f).apply { text = "Target range (" + (if (mgdl) "mg/dL" else "mmol/L") + ")" })
+        val row = LinearLayout(this).apply { orientation = LinearLayout.HORIZONTAL }
+        fun box(hint: String, value: String) = android.widget.EditText(this).apply {
+            this.hint = hint
+            setText(value)
+            inputType = android.text.InputType.TYPE_CLASS_NUMBER or android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL
+            layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+        }
+        val lowBox = box("Low", fmt(Range.lowMmol(this)))
+        val highBox = box("High", fmt(Range.highMmol(this)))
+        row.addView(lowBox); row.addView(highBox)
+        row.addView(Button(this).apply {
+            text = "Save"
+            setOnClickListener {
+                val lo = lowBox.text.toString().replace(',', '.').toDoubleOrNull()
+                val hi = highBox.text.toString().replace(',', '.').toDoubleOrNull()
+                if (lo == null || hi == null || lo >= hi) {
+                    android.widget.Toast.makeText(this@MainActivity, "Low must be below high", android.widget.Toast.LENGTH_SHORT).show()
+                } else {
+                    Range.set(this@MainActivity, lo / f, hi / f)
+                    GlucoseWidget.refresh(this@MainActivity)
+                    android.widget.Toast.makeText(this@MainActivity, "Saved", android.widget.Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+        col.addView(row)
+
         raw = label(12f)
         col.addView(raw)
 
@@ -79,6 +110,7 @@ class MainActivity : Activity() {
             append(if (granted) "✓ Notification access on\n" else "✗ Notification access needed\n")
             append(if (notifOk) "✓ Can post notifications\n" else "✗ Notification permission needed\n")
             append(r?.let { "Last reading " + DateUtils.getRelativeTimeSpanString(it.timeMs) } ?: "No reading from CamAPS FX yet")
+            Range.percentToday(this@MainActivity)?.let { append("\nTime in range today: $it%") }
         }
         val last = Store.raw(this)
         raw.text = if (last.isNotEmpty()) "Last CamAPS notification text:\n$last" else ""

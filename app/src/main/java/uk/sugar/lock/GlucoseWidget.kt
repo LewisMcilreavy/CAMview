@@ -32,6 +32,24 @@ class GlucoseWidget : AppWidgetProvider() {
                     else "${r.unit} · " + (if (mins == 0L) "just now" else "$mins min ago")
                 )
             }
+            // Background colour by range; neutral when there's no reading or it's old.
+            val stale = r == null || System.currentTimeMillis() - r.timeMs > LockScreenNotifier.STALE_MS
+            val bg = when {
+                stale -> R.drawable.widget_bg
+                Range.classify(c, r!!) == Range.Cls.LOW -> R.drawable.widget_low
+                Range.classify(c, r) == Range.Cls.HIGH -> R.drawable.widget_high
+                else -> R.drawable.widget_bg
+            }
+            v.setInt(R.id.root, "setBackgroundResource", bg)
+
+            val tir = Range.percentToday(c)
+            if (tir != null) {
+                v.setTextViewText(R.id.tir, "$tir% in range today")
+                v.setViewVisibility(R.id.tir, android.view.View.VISIBLE)
+            } else {
+                v.setViewVisibility(R.id.tir, android.view.View.GONE)
+            }
+
             v.setOnClickPendingIntent(
                 R.id.root,
                 PendingIntent.getActivity(c, 1, Intent(c, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE)
