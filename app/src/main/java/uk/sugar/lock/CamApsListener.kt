@@ -41,8 +41,10 @@ class CamApsListener : NotificationListenerService() {
         if (!sbn.packageName.startsWith(CAMAPS_PREFIX)) return
         val texts = collectTexts(sbn.notification)
         val raw = texts.joinToString(" | ")
-        val reading = GlucoseParser.parse(texts, System.currentTimeMillis())
+        var reading = GlucoseParser.parse(texts, System.currentTimeMillis())
         if (reading != null) {
+            val calc = Trend.update(this, reading)
+            if (reading.trend.isEmpty()) reading = reading.copy(trend = calc)
             Store.save(this, reading, raw)
             LockScreenNotifier.show(this, reading)
         } else {
