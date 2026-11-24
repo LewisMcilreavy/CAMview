@@ -69,7 +69,10 @@ You can also add the same widget to your home screen: long-press the home screen
 15.8 ↘
 mmol/L · 2 min ago
 72% in range today
+I count carbs so you don't have to.
 ```
+
+The last line is a little diabetes joke that changes every day.
 
 **Colour**
 

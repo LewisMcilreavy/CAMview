@@ -1,7 +1,6 @@
 ## What's new
 
-- **Trend arrow fix.** Dexcom readings arrive every 5 minutes, sometimes a few seconds early, which stopped the arrow from appearing. It now shows about 10 minutes after the app starts.
-- **Full user guide.** Setup, the lock-screen widget, the Now Bar, target range and troubleshooting are now all in the [README](https://github.com/LewisMcilreavy/CAMview#readme).
+- **Joke of the day.** A little diabetes joke at the bottom of the widget, new every day.
 
 ## Install
 

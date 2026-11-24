@@ -50,6 +50,8 @@ class GlucoseWidget : AppWidgetProvider() {
                 v.setViewVisibility(R.id.tir, android.view.View.GONE)
             }
 
+            v.setTextViewText(R.id.joke, Jokes.today())
+
             v.setOnClickPendingIntent(
                 R.id.root,
                 PendingIntent.getActivity(c, 1, Intent(c, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE)
