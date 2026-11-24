@@ -52,7 +52,10 @@ class MainActivity : Activity() {
         })
         col.addView(label(14f).apply {
             text = "On the lock screen, make sure notifications are set to show all content " +
-                "(not 'hide sensitive content').\n\nThis is a display only. CamAPS FX stays in charge of " +
+                "(not 'hide sensitive content').\n\n" +
+                "Samsung Now Bar: in Settings > Developer options, turn on 'Live notifications for all apps'.\n" +
+                "Under the clock: Samsung only allows its own widgets there, so install Good Lock > LockStar " +
+                "from the Galaxy Store and add the 'Glucose' widget.\n\nThis is a display only. CamAPS FX stays in charge of " +
                 "alarms and insulin – always check CamAPS before acting on a number."
         })
         raw = label(12f)

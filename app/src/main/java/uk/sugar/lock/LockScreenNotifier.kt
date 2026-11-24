@@ -71,8 +71,14 @@ object LockScreenNotifier {
             .setShowWhen(r != null)
             .setWhen(r?.timeMs ?: System.currentTimeMillis())
             .setContentIntent(open)
+            // Android 16 "Live Update": shown in Samsung's Now Bar and as a status-bar chip.
+            .addExtras(android.os.Bundle().apply {
+                putBoolean("android.requestPromotedOngoing", true)
+                putString("android.shortCriticalText", iconText)
+            })
             .build()
         nm.notify(ID, n)
+        GlucoseWidget.refresh(c)
     }
 
     /** Draws the number as a white-on-transparent bitmap for the status bar. */
