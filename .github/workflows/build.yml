@@ -19,26 +19,25 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Build APK (for installing directly)
-        run: |
-          chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon
-          cp app/build/outputs/apk/debug/app-debug.apk SugarLock.apk
-
-      # Signed bundle for Google Play. Only runs once the upload key has been added
-      # to the repo's secrets (KEYSTORE_BASE64 and KEYSTORE_PASSWORD).
-      - name: Build signed bundle (for Google Play)
+      # Signed with your own upload key (from the repo's secrets), so every new
+      # APK installs over the last one. Without the key it falls back to a
+      # throwaway debug key, which needs an uninstall between versions.
+      - name: Build APK and Play bundle
         env:
           KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
         run: |
+          chmod +x gradlew
           if [ -z "$KEYSTORE_BASE64" ]; then
-            echo "No upload key in secrets yet - skipping the Play bundle."
+            echo "::warning::No upload key in secrets - building a debug-signed APK only."
+            ./gradlew assembleDebug --no-daemon
+            cp app/build/outputs/apk/debug/app-debug.apk SugarLock.apk
             exit 0
           fi
           echo "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/upload.jks"
           export KEYSTORE_FILE="$RUNNER_TEMP/upload.jks"
-          ./gradlew bundleRelease --no-daemon
+          ./gradlew assembleRelease bundleRelease --no-daemon
+          cp app/build/outputs/apk/release/app-release.apk SugarLock.apk
           cp app/build/outputs/bundle/release/app-release.aab SugarLock-play.aab
           rm -f "$RUNNER_TEMP/upload.jks"
 
