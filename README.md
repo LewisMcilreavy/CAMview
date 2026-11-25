@@ -130,3 +130,7 @@ Every change pushed to this repo builds automatically with GitHub Actions and is
 ## Privacy
 
 Sugar Lock has no internet access and keeps everything on your phone. See the [privacy policy](PRIVACY.md).
+
+## Licence
+
+Sugar Lock is open source under the [MIT licence](LICENSE). It is not made by or affiliated with CamDiab Ltd, and comes with no warranty: it is a display only and not a medical device.
