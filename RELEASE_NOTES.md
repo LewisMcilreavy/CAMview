@@ -1,15 +1,10 @@
-## What's new
+## ⚠️ Test build: LibreLink support
 
-- **Fix: insulin doses no longer show as glucose.** After a bolus, CamAPS can post a notification like "2.4 U", which Sugar Lock was reading as a glucose of 2.4. Sugar Lock now:
-  - ignores CamAPS notifications about insulin, carbs or the pump
-  - ignores numbers with units like U, g, %, h or min
-  - rejects any value that jumps further than glucose physically can since the last reading
+**This is a test version, not a normal release.** It adds experimental support for Abbott's Libre apps (FreeStyle LibreLink, FreeStyle Libre 3 and the newer Libre app), alongside CamAPS FX.
 
-## Install
+### For testers
+1. Install **SugarLock.apk** below and set it up as in the [user guide](https://github.com/LewisMcilreavy/Sugar-Lock#2-first-time-setup).
+2. Make sure your Libre app is showing your glucose in its notification.
+3. Open Sugar Lock and screenshot the **Last notification text** at the bottom. Send it over, especially if the number is wrong or missing.
 
-1. Tap **SugarLock.apk** below to download it.
-2. Open it and tap **Install**. It updates over your current version.
-
-New to Sugar Lock? Follow the [setup guide](https://github.com/LewisMcilreavy/Sugar-Lock#2-first-time-setup).
-
-> Sugar Lock is a display only. CamAPS FX stays in charge of alarms and insulin. Always check CamAPS before acting on a number.
+> Sugar Lock is a display only. Your Libre app stays in charge of alarms. Always check it before acting on a number.

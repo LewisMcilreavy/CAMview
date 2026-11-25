@@ -38,9 +38,10 @@ class CamApsListener : NotificationListenerService() {
     }
 
     override fun onNotificationPosted(sbn: StatusBarNotification) {
-        if (!sbn.packageName.startsWith(CAMAPS_PREFIX)) return
+        if (SOURCE_PREFIXES.none { sbn.packageName.startsWith(it) }) return
         val texts = collectTexts(sbn.notification)
-        val raw = texts.joinToString(" | ")
+        // Includes the source app's package name, to help testers report problems.
+        val raw = sbn.packageName + ": " + texts.joinToString(" | ")
         var reading = GlucoseParser.parse(texts, System.currentTimeMillis())
         if (reading != null && !plausible(reading)) reading = null
         if (reading != null) {
@@ -106,5 +107,17 @@ class CamApsListener : NotificationListenerService() {
     companion object {
         /** Covers the mmol/L, mg/dL and HX variants (com.camdiab.fx_alert.*). */
         const val CAMAPS_PREFIX = "com.camdiab.fx_alert"
+
+        /**
+         * Apps whose notifications are read. CamAPS FX (all variants), plus Abbott's
+         * Libre apps (TEST): FreeStyle LibreLink (com.freestylelibre.app.<region>),
+         * FreeStyle Libre 3 (com.freestylelibre3.app.<region>) and the newer
+         * Libre app (com.abbott.adc.freestyle.libre.<region>).
+         */
+        val SOURCE_PREFIXES = listOf(
+            CAMAPS_PREFIX,
+            "com.freestylelibre",
+            "com.abbott.adc.freestyle",
+        )
     }
 }

@@ -109,11 +109,11 @@ class MainActivity : Activity() {
         status.text = buildString {
             append(if (granted) "✓ Notification access on\n" else "✗ Notification access needed\n")
             append(if (notifOk) "✓ Can post notifications\n" else "✗ Notification permission needed\n")
-            append(r?.let { "Last reading " + DateUtils.getRelativeTimeSpanString(it.timeMs) } ?: "No reading from CamAPS FX yet")
+            append(r?.let { "Last reading " + DateUtils.getRelativeTimeSpanString(it.timeMs) } ?: "No reading from CamAPS FX or LibreLink yet")
             Range.percentToday(this@MainActivity)?.let { append("\nTime in range today: $it%") }
         }
         val last = Store.raw(this)
-        raw.text = if (last.isNotEmpty()) "Last CamAPS notification text:\n$last" else ""
+        raw.text = if (last.isNotEmpty()) "Last notification text (send this if the number is wrong):\n$last" else ""
 
         if (notifOk) LockScreenNotifier.show(this, r)
     }
