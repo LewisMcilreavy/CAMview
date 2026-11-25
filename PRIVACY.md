@@ -43,4 +43,4 @@ If this policy changes, the new version will be published here with a new date.
 
 ## Contact
 
-Questions? Open an issue at https://github.com/LewisMcilreavy/CAMview/issues
+Questions? Open an issue at https://github.com/LewisMcilreavy/Sugar-Lock/issues

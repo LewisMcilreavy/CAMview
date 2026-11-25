@@ -19,7 +19,7 @@ It only reads. It never changes anything in CamAPS, your pump or your sensor, an
 
 ## 1. Install
 
-1. On your phone, open the [latest release](https://github.com/LewisMcilreavy/CAMview/releases/latest).
+1. On your phone, open the [latest release](https://github.com/LewisMcilreavy/Sugar-Lock/releases/latest).
 2. Tap **SugarLock.apk** to download it.
 3. Open the download and tap **Install**.
    - If Android blocks it, tap **Settings**, allow installs from your browser, go back and tap **Install**.
