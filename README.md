@@ -4,6 +4,8 @@
 
 See your CamAPS FX glucose on your lock screen, without unlocking your phone.
 
+<p align="center"><img src="docs/screenshot-widget.jpg" width="420" alt="Sugar Lock widget on a Samsung lock screen showing 14.4 mmol/L, falling slowly, in amber because it is above range"></p>
+
 Sugar Lock reads the glucose that CamAPS FX already shows in its notification and puts it:
 
 - **in a widget on your lock screen**, coloured by your target range
