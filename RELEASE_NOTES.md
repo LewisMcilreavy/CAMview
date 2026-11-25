@@ -1,8 +1,7 @@
 ## What's new
 
-- **Random joke of the day.** About 150 diabetes jokes. A random one is shown each day, and none repeats until they've all been used.
-
-- **Getting ready for Google Play.** Builds now count up their version number, and a privacy policy has been added.
+- **New logo.** A padlock with a blood-drop keyhole, as the app icon (including Android's themed icons).
+- **Getting ready for Google Play.** Builds count up their version number, and there's a privacy policy.
 
 ## Install
 

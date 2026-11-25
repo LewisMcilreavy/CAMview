@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/logo.svg" width="128" alt="Sugar Lock logo"></p>
+
 # Sugar Lock
 
 See your CamAPS FX glucose on your lock screen, without unlocking your phone.

@@ -1,0 +1,11 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="200" android:viewportHeight="200">
+    <!-- Themed-icon version: lock body with the drop cut out -->
+    <group android:scaleX="0.9" android:scaleY="0.9" android:pivotX="100" android:pivotY="100">
+        <path android:pathData="M68,92 V72 a32,32 0 0,1 64,0 V92"
+            android:strokeColor="#FFFFFF" android:strokeWidth="14" android:strokeLineCap="round" />
+        <path android:fillColor="#FFFFFF" android:fillType="evenOdd"
+            android:pathData="M68,88 H132 A18,18 0 0,1 150,106 V148 A18,18 0 0,1 132,166 H68 A18,18 0 0,1 50,148 V106 A18,18 0 0,1 68,88 Z M100,104 C100,104 84,124 84,135 a16,16 0 0,0 32,0 C116,124 100,104 100,104 Z" />
+    </group>
+</vector>
