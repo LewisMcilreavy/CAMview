@@ -42,6 +42,7 @@ class CamApsListener : NotificationListenerService() {
         val texts = collectTexts(sbn.notification)
         val raw = texts.joinToString(" | ")
         var reading = GlucoseParser.parse(texts, System.currentTimeMillis())
+        if (reading != null && !plausible(reading)) reading = null
         if (reading != null) {
             val calc = Trend.update(this, reading)
             if (reading.trend.isEmpty()) reading = reading.copy(trend = calc)
@@ -51,6 +52,24 @@ class CamApsListener : NotificationListenerService() {
         } else {
             Store.saveRaw(this, raw) // shown in the app, to help fix parsing
         }
+    }
+
+    /**
+     * Glucose can't change faster than a few tenths of a mmol/L per minute, so a value
+     * that jumps further than that from the last reading (within 15 minutes) is almost
+     * certainly a different number from a CamAPS notification, such as an insulin dose.
+     * Allows 0.5 mmol/L per minute, and at least 1.0 mmol/L, which is far more than any
+     * real change. After 15 minutes without an accepted reading, anything is accepted.
+     */
+    private fun plausible(r: Reading): Boolean {
+        val prev = Store.load(this) ?: return true
+        val gapMin = (r.timeMs - prev.timeMs) / 60_000.0
+        if (gapMin < 0 || gapMin > 15) return true
+        val now = GlucoseParser.mmol(r)
+        val before = GlucoseParser.mmol(prev)
+        if (now == null || before == null) return true // LOW/HIGH
+        val allowed = maxOf(1.0, 0.5 * gapMin)
+        return kotlin.math.abs(now - before) <= allowed
     }
 
     private fun collectTexts(n: Notification): List<String> {
