@@ -14,17 +14,36 @@
         android:layout_marginBottom="8dp"
         android:orientation="vertical"
         android:gravity="center_vertical">
-        <TextView android:id="@+id/value"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:paddingStart="4dp"
-            android:includeFontPadding="false"
-            android:textColor="#FFFFFFFF" android:textSize="34sp" android:textStyle="bold"
-            android:text="--" />
-        <TextView android:id="@+id/age"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:paddingStart="4dp"
-            android:textColor="#CCFFFFFF" android:textSize="13sp"
-            android:text="Waiting for CamAPS FX" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView android:id="@+id/value"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:paddingStart="4dp"
+                    android:includeFontPadding="false"
+                    android:textColor="#FFFFFFFF" android:textSize="34sp" android:textStyle="bold"
+                    android:text="--" />
+                <TextView android:id="@+id/age"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:paddingStart="4dp"
+                    android:textColor="#CCFFFFFF" android:textSize="13sp"
+                    android:text="Waiting for CamAPS FX" />
+            </LinearLayout>
+            <!-- Last 3 hours; the shaded band is the target range. -->
+            <ImageView android:id="@+id/graph"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:layout_marginStart="12dp"
+                android:scaleType="fitXY"
+                android:contentDescription="Glucose over the last 3 hours" />
+        </LinearLayout>
         <TextView android:id="@+id/tir"
             android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:paddingStart="4dp"

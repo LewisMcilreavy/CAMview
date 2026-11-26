@@ -47,6 +47,7 @@ class CamApsListener : NotificationListenerService() {
             val calc = Trend.update(this, reading)
             if (reading.trend.isEmpty()) reading = reading.copy(trend = calc)
             Range.record(this, reading)
+            History.add(this, reading)
             Store.save(this, reading, raw)
             LockScreenNotifier.show(this, reading)
         } else {

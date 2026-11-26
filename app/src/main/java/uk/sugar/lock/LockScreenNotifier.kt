@@ -61,7 +61,7 @@ object LockScreenNotifier {
         }
 
         val n = Notification.Builder(c, CHANNEL)
-            .setSmallIcon(numberIcon(iconText))
+            .setSmallIcon(numberIcon(iconText, if (r != null && iconText == r.value) r.trend else ""))
             .setContentTitle(title)
             .setContentText(text)
             .setOngoing(true)
@@ -74,26 +74,58 @@ object LockScreenNotifier {
             // Android 16 "Live Update": shown in Samsung's Now Bar and as a status-bar chip.
             .addExtras(android.os.Bundle().apply {
                 putBoolean("android.requestPromotedOngoing", true)
-                putString("android.shortCriticalText", iconText)
+                putString("android.shortCriticalText", if (r != null && iconText == r.value) (iconText + r.trend) else iconText)
             })
             .build()
         nm.notify(ID, n)
         GlucoseWidget.refresh(c)
     }
 
-    /** Draws the number as a white-on-transparent bitmap for the status bar. */
-    private fun numberIcon(s: String): Icon {
+    /**
+     * Draws the number, plus the trend arrow to its right, as a white-on-transparent
+     * bitmap for the status bar.
+     */
+    private fun numberIcon(s: String, trend: String): Icon {
         val size = 96
         val bmp = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+        val cv = Canvas(bmp)
+        val angle = when (trend) {
+            "⇈", "↑", "⬆" -> -90f
+            "↗", "➚" -> -45f
+            "→", "➔" -> 0f
+            "↘", "➘" -> 45f
+            "↓", "⇊", "⬇" -> 90f
+            else -> null
+        }
+        val textW = if (angle != null) size * 0.70f else size.toFloat()
         val p = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             color = Color.WHITE
             typeface = Typeface.DEFAULT_BOLD
             textAlign = Paint.Align.CENTER
             textSize = size * 0.9f
         }
-        while (p.measureText(s) > size && p.textSize > 10) p.textSize -= 2
+        while (p.measureText(s) > textW && p.textSize > 10) p.textSize -= 2
         val y = size / 2f - (p.descent() + p.ascent()) / 2
-        Canvas(bmp).drawText(s, size / 2f, y, p)
+        cv.drawText(s, textW / 2f, y, p)
+
+        if (angle != null) {
+            // Arrow pointing right, rotated to the trend direction.
+            val cx = size * 0.86f
+            val cy = size / 2f
+            val len = size * 0.13f
+            val arrow = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+                color = Color.WHITE; style = Paint.Style.STROKE; strokeWidth = size * 0.07f
+                strokeCap = Paint.Cap.ROUND; strokeJoin = Paint.Join.ROUND
+            }
+            cv.save()
+            cv.rotate(angle, cx, cy)
+            val path = android.graphics.Path().apply {
+                moveTo(cx - len, cy); lineTo(cx + len, cy)
+                moveTo(cx + len * 0.2f, cy - len * 0.8f); lineTo(cx + len, cy); lineTo(cx + len * 0.2f, cy + len * 0.8f)
+            }
+            cv.drawPath(path, arrow)
+            cv.restore()
+        }
         return Icon.createWithBitmap(bmp)
     }
 }

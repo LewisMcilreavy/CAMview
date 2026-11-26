@@ -1,9 +1,9 @@
 ## What's new
 
-- **Fix: insulin doses no longer show as glucose.** After a bolus, CamAPS can post a notification like "2.4 U", which Sugar Lock was reading as a glucose of 2.4. Sugar Lock now:
-  - ignores CamAPS notifications about insulin, carbs or the pump
-  - ignores numbers with units like U, g, %, h or min
-  - rejects any value that jumps further than glucose physically can since the last reading
+- **3-hour graph.** The widget now shows a small graph of your last 3 hours next to the number, with your target range shaded. There's a bigger version at the top of the app.
+- **Trend arrow in the status bar.** The number at the top of the screen now has the trend arrow next to it.
+
+The graph fills in as new readings arrive, so it starts empty after updating and builds up over the next few hours.
 
 ## Install
 

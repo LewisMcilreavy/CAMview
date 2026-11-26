@@ -20,6 +20,7 @@ class MainActivity : Activity() {
     private lateinit var status: TextView
     private lateinit var reading: TextView
     private lateinit var raw: TextView
+    private lateinit var graph: android.widget.ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +34,13 @@ class MainActivity : Activity() {
         reading = label(44f)
         status = label(16f)
         col.addView(reading)
+        graph = android.widget.ImageView(this).apply {
+            scaleType = android.widget.ImageView.ScaleType.FIT_XY
+            contentDescription = "Glucose over the last 3 hours"
+            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (140 * resources.displayMetrics.density).toInt())
+        }
+        col.addView(graph)
+        col.addView(label(12f).apply { text = "Last 3 hours · shaded band is your target range" })
         col.addView(status)
 
         col.addView(Button(this).apply {
@@ -105,6 +113,7 @@ class MainActivity : Activity() {
             checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
 
         val r = Store.load(this)
+        graph.setImageBitmap(Graph.render(this, 1000, 300, Graph.APP))
         reading.text = r?.let { listOf(it.value, it.unit, it.trend).filter(String::isNotEmpty).joinToString(" ") } ?: "--"
         status.text = buildString {
             append(if (granted) "✓ Notification access on\n" else "✗ Notification access needed\n")
